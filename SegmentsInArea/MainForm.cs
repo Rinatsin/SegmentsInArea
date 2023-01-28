@@ -8,10 +8,9 @@ namespace SegmentsInArea
 {
 	public partial class MainForm : DevExpress.XtraEditors.XtraForm
 	{
-		private Bitmap _bitmap;
-		private Graphics _graphics;
-		private Pen _pen;
-		private Point _px, _py;
+		private readonly Bitmap _bitmap;
+		private readonly Graphics _graphics;
+		private readonly Pen _pen;
 
 		private bool _isPaint;
 		private int _index;
@@ -69,25 +68,24 @@ namespace SegmentsInArea
 
 			if (_index == 2)
 			{
-				var x = _x < _cX ? _x : _cX;
-				var y = _y < _cY ? _y : _cY;
-				_graphics.DrawRectangle(_pen, x, y, Math.Abs(_sX), Math.Abs(_sY));
+				var rect = GetRectangle();
+				_graphics.DrawRectangle(_pen, rect);
 			}
 		}
 
-		private void btn_line_Click(object sender, System.EventArgs e)
+		private void btn_line_Click(object sender, EventArgs e)
 		{
 			_index = 1;
 			btn_rect.Checked = false;
 		}
 
-		private void btn_rect_Click(object sender, System.EventArgs e)
+		private void btn_rect_Click(object sender, EventArgs e)
 		{
 			_index = 2;
 			btn_line.Checked = false;
 		}
 
-		private void simpleButton1_Click(object sender, System.EventArgs e)
+		private void simpleButton1_Click(object sender, EventArgs e)
 		{
 			_graphics.Clear(Color.White);
 			pic_canvas.Image = _bitmap;
@@ -105,12 +103,18 @@ namespace SegmentsInArea
 						graphics.DrawLine(_pen, _cX, _cY, _x, _y);
 						break;
 					case 2:
-						var x = _x < _cX ? _x : _cX;
-						var y = _y < _cY ? _y : _cY;
-						graphics.DrawRectangle(_pen, x, y, Math.Abs(_sX), Math.Abs(_sY));
+						var rect = GetRectangle();
+						graphics.DrawRectangle(_pen, rect);
 						break;
 				}
 			}
+		}
+
+		private Rectangle GetRectangle()
+		{
+			var x = _x < _cX ? _x : _cX;
+			var y = _y < _cY ? _y : _cY;
+			return new Rectangle(x, y, Math.Abs(_sX), Math.Abs(_sY));
 		}
 	}
 }
