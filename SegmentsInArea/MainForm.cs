@@ -1,5 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using DevExpress.XtraPrinting;
 
 namespace SegmentsInArea
 {
@@ -32,6 +35,7 @@ namespace SegmentsInArea
 
 		private void pictureBoxDrawing_MouseDown(object sender, MouseEventArgs e)
 		{
+			_sX = _sY = 0;
 			_isPaint = true;
 			_py = e.Location;
 
@@ -41,15 +45,6 @@ namespace SegmentsInArea
 
 		private void pictureBoxDrawing_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (_isPaint)
-			{
-				if (_index == 3)
-				{
-					_px = e.Location;
-					_graphics.DrawLine(_pen, _px, _py);
-					_py = _px;
-				}
-			}
 			pic_canvas.Refresh();
 			
 			//Если мышь движется, то устанавливаем точки начала и конца,
@@ -74,7 +69,9 @@ namespace SegmentsInArea
 
 			if (_index == 2)
 			{
-				_graphics.DrawRectangle(_pen, _cX, _cY, _sX, _sY);
+				var x = _x < _cX ? _x : _cX;
+				var y = _y < _cY ? _y : _cY;
+				_graphics.DrawRectangle(_pen, x, y, Math.Abs(_sX), Math.Abs(_sY));
 			}
 		}
 
@@ -94,10 +91,6 @@ namespace SegmentsInArea
 		{
 			_graphics.Clear(Color.White);
 			pic_canvas.Image = _bitmap;
-			_index = 0;
-
-			btn_line.Checked = false;
-			btn_rect.Checked = false;
 		}
 		
 		private void pic_canvas_Paint(object sender, PaintEventArgs e)
@@ -112,7 +105,9 @@ namespace SegmentsInArea
 						graphics.DrawLine(_pen, _cX, _cY, _x, _y);
 						break;
 					case 2:
-						graphics.DrawRectangle(_pen, _cX, _cY, _sX, _sY);
+						var x = _x < _cX ? _x : _cX;
+						var y = _y < _cY ? _y : _cY;
+						graphics.DrawRectangle(_pen, x, y, Math.Abs(_sX), Math.Abs(_sY));
 						break;
 				}
 			}
