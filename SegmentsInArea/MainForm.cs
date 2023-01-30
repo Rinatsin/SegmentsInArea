@@ -140,12 +140,7 @@ namespace SegmentsInArea
 			_selectedLines.Clear();
 			rtb_lines.Text = "";
 		}
-
-		/// <summary>
-		/// Отрисовка элементов
-		/// </summary>
-		/// <param name="sender">объект класса отправителя</param>
-		/// <param name="e">данные для события</param>
+		
 		private void pic_canvas_Paint(object sender, PaintEventArgs e)
 		{
 			var graphics = e.Graphics;
@@ -186,7 +181,7 @@ namespace SegmentsInArea
 		}
 
 		/// <summary>
-		/// Получить прямоугольную о
+		/// Получить прямоугольную область
 		/// </summary>
 		/// <returns></returns>
 		private Rectangle GetRectangle()
