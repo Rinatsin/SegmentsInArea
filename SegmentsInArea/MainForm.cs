@@ -12,10 +12,12 @@ namespace SegmentsInArea
 		private readonly Bitmap _bitmap;
 		private readonly Graphics _graphics;
 
-		private readonly Color _penColor;
+		private readonly Color _penColorBase;
+		private readonly Color _penColorSelected;
 		private readonly int _penWidth;
 
 		private readonly List<Line> _lines;
+		private readonly List<Line> _selectedLines;
 
 		private bool _needRedraw;
 		private bool _isPaint;
@@ -33,12 +35,14 @@ namespace SegmentsInArea
 			_bitmap = new Bitmap(pic_canvas.Width, pic_canvas.Height);
 			_graphics = Graphics.FromImage(_bitmap);
 			_graphics.Clear(Color.White);
-			_penColor = Color.Black;
+			_penColorBase = Color.Black;
+			_penColorSelected = Color.Red;
 			_penWidth = 1;
 
 			pic_canvas.Image = _bitmap;
 
 			_lines = new List<Line>();
+			_selectedLines = new List<Line>();
 		}
 
 		private void pictureBoxDrawing_MouseDown(object sender, MouseEventArgs e)
@@ -72,28 +76,45 @@ namespace SegmentsInArea
 			_dX = _x - _cX;
 			_dY = _y - _cY;
 
+			//Финальная отрисовка линии
 			if (_index == 1)
 			{
 				var start = new Point(_cX, _cY);
 				var end = new Point(_x, _y);
 
-				using var pen = new Pen(_penColor, _penWidth);
-				var line = new Line(_penColor, _penWidth, start, end);
+				using var pen = new Pen(_penColorBase, _penWidth);
+				var line = new Line(_penColorBase, _penWidth, start, end);
 				line.Draw(_graphics);
 				_lines.Add(line);
 			}
 
+			//Финальная отрисовка прямоугольника
 			if (_index == 2)
 			{
 				var rect = GetRectangle();
-				using var pen = new Pen(_penColor, _penWidth);
+				using var pen = new Pen(_penColorBase, _penWidth);
 				_graphics.DrawRectangle(pen, rect);
+
+				//Проверка вхождения в прямоугольную область
 				foreach (var line in _lines.
 					         Where(line => Intersection.LineIntersectsRect(line.Start, line.End, rect)))
 				{
-					line.LineColor = Color.Red;
+					line.LineColor = _penColorSelected;
+					_selectedLines.Add(line);
+				}
+				//Удаляем из списка линий, линии, которые пересекаются с прямоугольником
+				foreach (var selectedLine in _selectedLines.Where(selectedLine => _lines.Contains(selectedLine)))
+				{
+					_lines.Remove(selectedLine);
 				}
 
+				//Отображение списка линий в прямоугольной области
+				rtb_lines.Text = string
+					.Join(
+							"\n", 
+							_selectedLines
+								.Select
+									(line => $"Линия p1:{line.Start}  p2:{line.End}").ToArray());
 				_needRedraw = true;
 				pic_canvas.Invalidate();
 			}
@@ -116,8 +137,15 @@ namespace SegmentsInArea
 			_graphics.Clear(Color.White);
 			pic_canvas.Image = _bitmap;
 			_lines.Clear();
+			_selectedLines.Clear();
+			rtb_lines.Text = "";
 		}
-		
+
+		/// <summary>
+		/// Отрисовка элементов
+		/// </summary>
+		/// <param name="sender">объект класса отправителя</param>
+		/// <param name="e">данные для события</param>
 		private void pic_canvas_Paint(object sender, PaintEventArgs e)
 		{
 			var graphics = e.Graphics;
@@ -128,14 +156,14 @@ namespace SegmentsInArea
 				switch (_index)
 				{
 					case 1:
-						using (var pen = new Pen(_penColor, _penWidth))
+						using (var pen = new Pen(_penColorBase, _penWidth))
 						{
 							graphics.DrawLine(pen, _cX, _cY, _x, _y);
 						}
 						break;
 					case 2:
 						var rect = GetRectangle();
-						using (var pen = new Pen(_penColor, _penWidth))
+						using (var pen = new Pen(_penColorBase, _penWidth))
 						{
 							graphics.DrawRectangle(pen, rect);
 						}
@@ -147,9 +175,9 @@ namespace SegmentsInArea
 			if (_needRedraw)
 			{
 				_needRedraw = false;
-				if (_lines.Count > 0)
+				if (_selectedLines.Count > 0)
 				{
-					foreach (var line in _lines)
+					foreach (var line in _selectedLines)
 					{
 						line.Draw(graphics);
 					}
@@ -157,6 +185,10 @@ namespace SegmentsInArea
 			}
 		}
 
+		/// <summary>
+		/// Получить прямоугольную о
+		/// </summary>
+		/// <returns></returns>
 		private Rectangle GetRectangle()
 		{
 			var x = _x < _cX ? _x : _cX;

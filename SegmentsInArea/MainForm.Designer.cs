@@ -37,7 +37,9 @@ namespace SegmentsInArea
 			this.label1 = new System.Windows.Forms.Label();
 			this.btn_rect = new DevExpress.XtraEditors.CheckButton();
 			this.btn_line = new DevExpress.XtraEditors.CheckButton();
-			this.labelCaptionSettings = new DevExpress.XtraEditors.LabelControl();
+			this.lbl_Shapes = new DevExpress.XtraEditors.LabelControl();
+			this.rtb_lines = new System.Windows.Forms.RichTextBox();
+			this.lbl_info = new DevExpress.XtraEditors.LabelControl();
 			((System.ComponentModel.ISupportInitialize)(this.pic_canvas)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.panelSettings)).BeginInit();
 			this.panelSettings.SuspendLayout();
@@ -48,9 +50,8 @@ namespace SegmentsInArea
 			this.pic_canvas.BackColor = System.Drawing.Color.White;
 			this.pic_canvas.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pic_canvas.Location = new System.Drawing.Point(0, 0);
-			this.pic_canvas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.pic_canvas.Name = "pic_canvas";
-			this.pic_canvas.Size = new System.Drawing.Size(737, 342);
+			this.pic_canvas.Size = new System.Drawing.Size(790, 572);
 			this.pic_canvas.TabIndex = 0;
 			this.pic_canvas.TabStop = false;
 			this.pic_canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.pic_canvas_Paint);
@@ -60,25 +61,26 @@ namespace SegmentsInArea
 			// 
 			// panelSettings
 			// 
+			this.panelSettings.Controls.Add(this.lbl_info);
+			this.panelSettings.Controls.Add(this.rtb_lines);
 			this.panelSettings.Controls.Add(this.btn_clear);
 			this.panelSettings.Controls.Add(this.label2);
 			this.panelSettings.Controls.Add(this.label1);
 			this.panelSettings.Controls.Add(this.btn_rect);
 			this.panelSettings.Controls.Add(this.btn_line);
-			this.panelSettings.Controls.Add(this.labelCaptionSettings);
+			this.panelSettings.Controls.Add(this.lbl_Shapes);
 			this.panelSettings.Dock = System.Windows.Forms.DockStyle.Right;
-			this.panelSettings.Location = new System.Drawing.Point(559, 0);
-			this.panelSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.panelSettings.Location = new System.Drawing.Point(567, 0);
 			this.panelSettings.Name = "panelSettings";
-			this.panelSettings.Size = new System.Drawing.Size(178, 342);
+			this.panelSettings.Size = new System.Drawing.Size(223, 572);
 			this.panelSettings.TabIndex = 1;
 			// 
 			// btn_clear
 			// 
-			this.btn_clear.Location = new System.Drawing.Point(6, 145);
+			this.btn_clear.Location = new System.Drawing.Point(5, 118);
 			this.btn_clear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.btn_clear.Name = "btn_clear";
-			this.btn_clear.Size = new System.Drawing.Size(167, 27);
+			this.btn_clear.Size = new System.Drawing.Size(206, 22);
 			this.btn_clear.TabIndex = 5;
 			this.btn_clear.Text = "Очистить";
 			this.btn_clear.Click += new System.EventHandler(this.btn_clear_Click);
@@ -86,18 +88,18 @@ namespace SegmentsInArea
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(70, 84);
+			this.label2.Location = new System.Drawing.Point(60, 68);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(108, 34);
+			this.label2.Size = new System.Drawing.Size(85, 26);
 			this.label2.TabIndex = 4;
 			this.label2.Text = "Прямоугольная\r\nобласть";
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(70, 41);
+			this.label1.Location = new System.Drawing.Point(60, 33);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(62, 17);
+			this.label1.Size = new System.Drawing.Size(50, 13);
 			this.label1.TabIndex = 3;
 			this.label1.Text = "Отрезок";
 			// 
@@ -105,10 +107,9 @@ namespace SegmentsInArea
 			// 
 			this.btn_rect.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
 			this.btn_rect.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btn_rect.ImageOptions.Image")));
-			this.btn_rect.Location = new System.Drawing.Point(6, 79);
-			this.btn_rect.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.btn_rect.Location = new System.Drawing.Point(5, 64);
 			this.btn_rect.Name = "btn_rect";
-			this.btn_rect.Size = new System.Drawing.Size(43, 46);
+			this.btn_rect.Size = new System.Drawing.Size(37, 37);
 			this.btn_rect.TabIndex = 2;
 			this.btn_rect.Click += new System.EventHandler(this.btn_rect_Click);
 			// 
@@ -116,36 +117,52 @@ namespace SegmentsInArea
 			// 
 			this.btn_line.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
 			this.btn_line.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btn_line.ImageOptions.Image")));
-			this.btn_line.Location = new System.Drawing.Point(6, 26);
-			this.btn_line.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.btn_line.Location = new System.Drawing.Point(5, 21);
 			this.btn_line.Name = "btn_line";
-			this.btn_line.Size = new System.Drawing.Size(43, 46);
+			this.btn_line.Size = new System.Drawing.Size(37, 37);
 			this.btn_line.TabIndex = 1;
 			this.btn_line.Click += new System.EventHandler(this.btn_line_Click);
 			// 
-			// labelCaptionSettings
+			// lbl_Shapes
 			// 
-			this.labelCaptionSettings.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.labelCaptionSettings.Appearance.Options.UseFont = true;
-			this.labelCaptionSettings.Dock = System.Windows.Forms.DockStyle.Top;
-			this.labelCaptionSettings.Location = new System.Drawing.Point(2, 2);
-			this.labelCaptionSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.labelCaptionSettings.Name = "labelCaptionSettings";
-			this.labelCaptionSettings.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-			this.labelCaptionSettings.Size = new System.Drawing.Size(62, 17);
-			this.labelCaptionSettings.TabIndex = 0;
-			this.labelCaptionSettings.Text = "Фигуры";
+			this.lbl_Shapes.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.lbl_Shapes.Appearance.Options.UseFont = true;
+			this.lbl_Shapes.Dock = System.Windows.Forms.DockStyle.Top;
+			this.lbl_Shapes.Location = new System.Drawing.Point(2, 2);
+			this.lbl_Shapes.Name = "lbl_Shapes";
+			this.lbl_Shapes.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+			this.lbl_Shapes.Size = new System.Drawing.Size(50, 13);
+			this.lbl_Shapes.TabIndex = 0;
+			this.lbl_Shapes.Text = "Фигуры";
+			// 
+			// rtb_lines
+			// 
+			this.rtb_lines.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.rtb_lines.Location = new System.Drawing.Point(2, 169);
+			this.rtb_lines.Name = "rtb_lines";
+			this.rtb_lines.Size = new System.Drawing.Size(219, 401);
+			this.rtb_lines.TabIndex = 6;
+			this.rtb_lines.Text = "";
+			// 
+			// lbl_info
+			// 
+			this.lbl_info.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.lbl_info.Appearance.Options.UseFont = true;
+			this.lbl_info.Location = new System.Drawing.Point(6, 150);
+			this.lbl_info.Name = "lbl_info";
+			this.lbl_info.Size = new System.Drawing.Size(135, 13);
+			this.lbl_info.TabIndex = 7;
+			this.lbl_info.Text = "Список линий в области";
 			// 
 			// MainForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(737, 342);
+			this.ClientSize = new System.Drawing.Size(790, 572);
 			this.Controls.Add(this.panelSettings);
 			this.Controls.Add(this.pic_canvas);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.Name = "MainForm";
 			this.Text = "Segments In Area";
 			((System.ComponentModel.ISupportInitialize)(this.pic_canvas)).EndInit();
@@ -160,12 +177,14 @@ namespace SegmentsInArea
 
 		private System.Windows.Forms.PictureBox pic_canvas;
 		private DevExpress.XtraEditors.PanelControl panelSettings;
-		private DevExpress.XtraEditors.LabelControl labelCaptionSettings;
+		private DevExpress.XtraEditors.LabelControl lbl_Shapes;
 		private DevExpress.XtraEditors.CheckButton btn_line;
 		private DevExpress.XtraEditors.CheckButton btn_rect;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
 		private DevExpress.XtraEditors.SimpleButton btn_clear;
+		private System.Windows.Forms.RichTextBox rtb_lines;
+		private DevExpress.XtraEditors.LabelControl lbl_info;
 	}
 }
 
